@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Patas Du Jojo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header do site -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🐾</div>
+                <div class="logo-text">
+                    Patas <span class="highlight">Du Jojo</span>
+                </div>
+            </div>
+            <div class="header-icons">
+                <div class="header-icon">📞</div>
+                <div class="header-icon">❤️</div>
+                <div class="header-icon">🛒</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="admin-header">
+            <h1>⚙️ Painel Admin</h1>
+            <p>Gestão do Petshop</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('dashboard')">📊 Dashboard</button>
+            <button class="nav-tab" onclick="showTab('usuarios')">👥 Usuários</button>
+            <button class="nav-tab" onclick="showTab('pets')">🐕 Pets</button>
+            <button class="nav-tab" onclick="showTab('agendamentos')">📅 Agendamentos</button>
+            <button class="nav-tab" onclick="showTab('servicos')">✂️ Serviços</button>
+            <button class="nav-tab" onclick="showTab('produtos')">📦 Produtos</button>
+            <button class="nav-tab" onclick="showTab('vendas')">💰 Vendas</button>
+            <button class="nav-tab" onclick="showTab('carrinho')">🛒 Carrinhos</button>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="tab-content active">
+            <div class="welcome-card">
+                <h2>Bem-vindo ao Admin! 👋</h2>
+                <p>Gerencie seu petshop de forma simples</p>
+            </div>
+
+            <div class="data-timestamp">
+                📅 Última atualização: <span id="lastUpdate"></span>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Clientes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Pets</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Agendamentos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">R$ 295</div>
+                    <div class="stat-label">Faturamento</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">📈 Resumo Geral</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Obs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Usuários</td>
+                            <td>4</td>
+                            <td><span class="status cliente">OK</span></td>
+                            <td>3 clientes + 1 funcionário</td>
+                        </tr>
+                        <tr>
+                            <td>Pets</td>
+                            <td>5</td>
+                            <td><span class="status concluido">OK</span></td>
+                            <td>3 cachorros + 2 gatos</td>
+                        </tr>
+                        <tr>
+                            <td>Serviços</td>
+                            <td>4</td>
+                            <td><span class="status concluido">Ativo</span></td>
+                            <td>Todos disponíveis</td>
+                        </tr>
+                        <tr>
+                            <td>Produtos</td>
+                            <td>6</td>
+                            <td><span class="status agendado">Verificar</span></td>
+                            <td>Alguns com estoque baixo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Usuários -->
+        <div id="usuarios" class="tab-content">
+            <div class="search-controls">
+                <input type="text" class="search-box" placeholder="🔍 Buscar usuários..." id="searchUsuarios">
+                <button class="refresh-btn" onclick="refreshData()">🔄 Atualizar</button>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-header">👥 Usuários</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Tipo</th>
+                            <th>CPF/Cargo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Jorlan Lemos Socho</td>
+                            <td>jorlans@gmail.com</td>
+                            <td>12499358</td>
+                            <td><span class="status funcionario">Funcionário</span></td>
+                            <td>Dono</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Maria Oliveira</td>
+                            <td>mariao@gmail.com</td>
+                            <td>11965432109</td>
+                            <td><span class="status cliente">Cliente</span></td>
+                            <td>123.456.789-01</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Bernardo Costa</td>
+                            <td>bernardoc@gmail.com</td>
+                            <td>11954321098</td>
+                            <td><span class="status cliente">Cliente</span></td>
+                            <td>987.654.321-02</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Sofia Lima</td>
+                            <td>sofial@gmail.com</td>
+                            <td>11943210987</td>
+                            <td><span class="status cliente">Cliente</span></td>
+                            <td>456.789.123-03</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pets -->
+        <div id="pets" class="tab-content">
+            <div class="search-controls">
+                <input type="text" class="search-box" placeholder="🔍 Buscar pets..." id="searchPets">
+                <button class="refresh-btn" onclick="refreshData()">🔄 Atualizar</button>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-header">🐕 Pets</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Tipo</th>
+                            <th>Porte</th>
+                            <th>Idade</th>
+                            <th>Tutor</th>
+                            <th>Obs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Rex</td>
+                            <td>🐕 Cachorro</td>
+                            <td>Grande</td>
+                            <td>3 anos</td>
+                            <td>Maria Oliveira</td>
+                            <td>Dócil, adora água</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Luna</td>
+                            <td>🐕 Cachorro</td>
+                            <td>Médio</td>
+                            <td>2 anos</td>
+                            <td>Bernardo Costa</td>
+                            <td>Agitada mas obediente</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Mimi</td>
+                            <td>🐱 Gato</td>
+                            <td>Pequeno</td>
+                            <td>4 anos</td>
+                            <td>Maria Oliveira</td>
+                            <td>Tímida, não gosta de barulho</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Thor</td>
+                            <td>🐕 Cachorro</td>
+                            <td>Grande</td>
+                            <td>5 anos</td>
+                            <td>Sofia Lima</td>
+                            <td>Calmo e protetor</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Mel</td>
+                            <td>🐱 Gato</td>
+                            <td>Pequeno</td>
+                            <td>1 ano</td>
+                            <td>Bernardo Costa</td>
+                            <td>Brincalhona e carinhosa</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Agendamentos -->
+        <div id="agendamentos" class="tab-content">
+            <div class="search-controls">
+                <input type="text" class="search-box" placeholder="🔍 Buscar agendamentos..." id="searchAgendamentos">
+                <button class="refresh-btn" onclick="refreshData()">🔄 Atualizar</button>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-header">📅 Agendamentos</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Pet</th>
+                            <th>Cliente</th>
+                            <th>Status</th>
+                            <th>Valor</th>
+                            <th>Obs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>10/06/2025</td>
+                            <td>09:00-10:00</td>
+                            <td>Rex</td>
+                            <td>Maria Oliveira</td>
+                            <td><span class="status concluido">Feito</span></td>
+                            <td>R$ 70,00</td>
+                            <td>Comportado no banho</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>10/06/2025</td>
+                            <td>14:00-14:45</td>
+                            <td>Luna</td>
+                            <td>Bernardo Costa</td>
+                            <td><span class="status concluido">Feito</span></td>
+                            <td>R$ 50,00</td>
+                            <td>Tosa urgente</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>12/06/2025</td>
+                            <td>10:00-10:15</td>
+                            <td>Mimi</td>
+                            <td>Maria Oliveira</td>
+                            <td><span class="status agendado">Agendado</span></td>
+                            <td>R$ 15,00</td>
+                            <td>Fica nervosa, ter paciência</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>15/06/2025</td>
+                            <td>16:00-17:00</td>
+                            <td>Thor</td>
+                            <td>Sofia Lima</td>
+                            <td><span class="status agendado">Agendado</span></td>
+                            <td>R$ 45,00</td>
+                            <td>Gosta de carinho</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Serviços -->
+        <div id="servicos" class="tab-content">
+            <div class="search-controls">
+                <input type="text" class="search-box" placeholder="🔍 Buscar serviços..." id="searchServicos">
+                <button class="refresh-btn" onclick="refreshData()">🔄 Atualizar</button>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-header">✂️ Serviços</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Preço</th>
+                            <th>Duração</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Banho Completo</td>
+                            <td>Banho com shampoo e secagem</td>
+                            <td>R$ 45,00</td>
+                            <td>60 min</td>
+                            <td><span class="status concluido">Ativo</span></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Tosa Simples</td>
+                            <td>Corte básico de pelos</td>
+                            <td>R$ 35,00</td>
+                            <td>45 min</td>
+                            <td><span class="status concluido">Ativo</span></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Corte de Unhas</td>
+                            <td>Corte seguro das unhas</td>
+                            <td>R$ 15,00</td>
+                            <td>15 min</td>
+                            <td><span class="status concluido">Ativo</span></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Hidratação</td>
+                            <td>Tratamento hidratante</td>
+                            <td>R$ 25,00</td>
+                            <td>30 min</td>
+                            <td><span class="status concluido">Ativo</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Produtos -->
+        <div id="produtos" class="tab-content">
+            <div class="search-controls">
+                <input type="text" class="search-box" placeholder="🔍 Buscar produtos..." id="searchProdutos">
+                <button class="refresh-btn" onclick="refreshData()">🔄 Atualizar</button>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-header">📦 Produtos</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Categoria</th>
+                            <th>Preço</th>
+                            <th>Estoque</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Ração Premium Cães 15kg</td>
+                            <td>Ração</td>
+                            <td>R$ 89,90</td>
+                            <td>25</td>
+                            <td><span class="status concluido">OK</span></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Ração Gatos 3kg</td>
+                            <td>Ração</td>
+                            <td>R$ 45,90</td>
+                            <td>18</td>
+                            <td><span class="status concluido">OK</span></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Shampoo Neutro 500ml</td>
+                            <td>Higiene</td>
+                            <td>R$ 25,50</td>
+                            <td>15</td>
+                            <td><span class="status concluido">OK</span></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Bola de Tênis</td>
+                            <td>Brinquedo</td>
+                            <td>R$ 12,90</td>
+                            <td>30</td>
+                            <td><span class="status concluido">OK</span></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Coleira Ajustável M</td>
+                            <td>Acessório</td>
+                            <td>R$ 18,90</td>
+                            <td>20</td>
+                            <td><span class="status concluido">OK</span></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Brinquedo Ratinho</td>
+                            <td>Brinquedo</td>
+                            <td>R$ 8,50</td>
+                            <td>25</td>
+                            <td><span class="status concluido">OK</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Vendas -->
+        <div id="vendas" class="tab-content">
+            <div class="search-controls">
+                <input type="text" class="search-box" placeholder="🔍 Buscar vendas..." id="searchVendas">
+                <button class="refresh-btn" onclick="refreshData()">🔄 Atualizar</button>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-header">💰 Vendas</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Data</th>
+                            <th>Valor</th>
+                            <th>Pagamento</th>
+                            <th>Itens</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Maria Oliveira</td>
+                            <td>31/05/2025</td>
+                            <td>R$ 140,90</td>
+                            <td>PIX</td>
+                            <td>Ração Premium (1x), Shampoo (2x)</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Bernardo Costa</td>
+                            <td>31/05/2025</td>
+                            <td>R$ 84,60</td>
+                            <td>Cartão</td>
+                            <td>Ração Gatos (1x), Ratinho (2x), Coleira (1x)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Carrinhos -->
+        <div id="carrinho" class="tab-content">
+            <div class="search-controls">
+                <input type="text" class="search-box" placeholder="🔍 Buscar carrinhos..." id="searchCarrinho">
+                <button class="refresh-btn" onclick="refreshData()">🔄 Atualizar</button>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-header">🛒 Carrinhos</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Telefone</th>
+                            <th>Valor</th>
+                            <th>Produtos</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Maria Oliveira</td>
+                            <td>11965432109</td>
+                            <td>R$ 140,90</td>
+                            <td>Ração Premium (1x), Shampoo (2x)</td>
+                            <td><span class="status agendado">Pendente</span></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Bernardo Costa</td>
+                            <td>11954321098</td>
+                            <td>R$ 84,60</td>
+                            <td>Ração Gatos (1x), Bola Tênis (3x)</td>
+                            <td><span class="status agendado">Pendente</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
