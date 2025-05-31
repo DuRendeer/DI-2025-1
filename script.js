@@ -1,15 +1,108 @@
 // Variáveis globais
 let currentData = {};
+let useLocalData = false; // Usar servidor por padrão
 
-// Carregar dados do servidor
+// Detectar ambiente e configurar URLs
+const isVercel = window.location.hostname.includes('vercel.app');
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+// URL base da API
+const API_BASE = isLocal ? './api' : '/api';
+
+console.log(`🌍 Ambiente detectado: ${isVercel ? 'Vercel' : isLocal ? 'Local' : 'Outro'}`);
+console.log(`🔗 API Base: ${API_BASE}`);
+
+// Dados mockados para teste sem servidor
+const mockData = {
+    dashboard: {
+        clientes: 4,
+        pets: 5,
+        agendamentos: 4,
+        faturamento: '295,50'
+    },
+    usuarios: [
+        {id: 1, nome: 'Jorlan Lemos Socho', email: 'jorlans@gmail.com', telefone: '12499358', tipo: 'Funcionário', cpf_cargo: 'Dono'},
+        {id: 2, nome: 'Maria Oliveira', email: 'mariao@gmail.com', telefone: '11965432109', tipo: 'Cliente', cpf_cargo: '123.456.789-01'},
+        {id: 3, nome: 'Bernardo Costa', email: 'bernardoc@gmail.com', telefone: '11954321098', tipo: 'Cliente', cpf_cargo: '987.654.321-02'},
+        {id: 4, nome: 'Sofia Lima', email: 'sofial@gmail.com', telefone: '11943210987', tipo: 'Cliente', cpf_cargo: '456.789.123-03'}
+    ],
+    pets: [
+        {id: 1, nome: 'Rex', tipo: '🐕 Cachorro', porte: 'Grande', idade: '3 anos', tutor: 'Maria Oliveira', observacoes: 'Dócil, adora água'},
+        {id: 2, nome: 'Luna', tipo: '🐕 Cachorro', porte: 'Médio', idade: '2 anos', tutor: 'Bernardo Costa', observacoes: 'Agitada mas obediente'},
+        {id: 3, nome: 'Mimi', tipo: '🐱 Gato', porte: 'Pequeno', idade: '4 anos', tutor: 'Maria Oliveira', observacoes: 'Tímida, não gosta de barulho'},
+        {id: 4, nome: 'Thor', tipo: '🐕 Cachorro', porte: 'Grande', idade: '5 anos', tutor: 'Sofia Lima', observacoes: 'Calmo e protetor'},
+        {id: 5, nome: 'Mel', tipo: '🐱 Gato', porte: 'Pequeno', idade: '1 ano', tutor: 'Bernardo Costa', observacoes: 'Brincalhona e carinhosa'}
+    ],
+    agendamentos: [
+        {id: 1, data: '10/06/2025', horario: '09:00-10:00', pet: 'Rex', cliente: 'Maria Oliveira', status: 'Concluído', valor: 'R$ 70,00', observacoes: 'Comportado no banho'},
+        {id: 2, data: '10/06/2025', horario: '14:00-14:45', pet: 'Luna', cliente: 'Bernardo Costa', status: 'Concluído', valor: 'R$ 50,00', observacoes: 'Tosa urgente'},
+        {id: 3, data: '12/06/2025', horario: '10:00-10:15', pet: 'Mimi', cliente: 'Maria Oliveira', status: 'Agendado', valor: 'R$ 15,00', observacoes: 'Fica nervosa, ter paciência'},
+        {id: 4, data: '15/06/2025', horario: '16:00-17:00', pet: 'Thor', cliente: 'Sofia Lima', status: 'Agendado', valor: 'R$ 45,00', observacoes: 'Gosta de carinho'}
+    ],
+    servicos: [
+        {id: 1, nome: 'Banho Completo', descricao: 'Banho com shampoo e secagem', preco: 'R$ 45,00', duracao: '60 min', status: 'Ativo'},
+        {id: 2, nome: 'Tosa Simples', descricao: 'Corte básico de pelos', preco: 'R$ 35,00', duracao: '45 min', status: 'Ativo'},
+        {id: 3, nome: 'Corte de Unhas', descricao: 'Corte seguro das unhas', preco: 'R$ 15,00', duracao: '15 min', status: 'Ativo'},
+        {id: 4, nome: 'Hidratação', descricao: 'Tratamento hidratante', preco: 'R$ 25,00', duracao: '30 min', status: 'Ativo'}
+    ],
+    produtos: [
+        {id: 1, nome: 'Ração Premium Cães 15kg', categoria: 'Ração', preco: 'R$ 89,90', estoque: 25, status: 'OK'},
+        {id: 2, nome: 'Ração Gatos 3kg', categoria: 'Ração', preco: 'R$ 45,90', estoque: 18, status: 'OK'},
+        {id: 3, nome: 'Shampoo Neutro 500ml', categoria: 'Higiene', preco: 'R$ 25,50', estoque: 15, status: 'OK'},
+        {id: 4, nome: 'Bola de Tênis', categoria: 'Brinquedo', preco: 'R$ 12,90', estoque: 30, status: 'OK'},
+        {id: 5, nome: 'Coleira Ajustável M', categoria: 'Acessório', preco: 'R$ 18,90', estoque: 20, status: 'OK'},
+        {id: 6, nome: 'Brinquedo Ratinho', categoria: 'Brinquedo', preco: 'R$ 8,50', estoque: 25, status: 'OK'}
+    ],
+    vendas: [
+        {id: 1, cliente: 'Maria Oliveira', data: '31/05/2025', valor: 'R$ 140,90', pagamento: 'PIX', itens: 'Ração Premium (1x), Shampoo (2x)'},
+        {id: 2, cliente: 'Bernardo Costa', data: '31/05/2025', valor: 'R$ 84,60', pagamento: 'Cartão', itens: 'Ração Gatos (1x), Ratinho (2x), Coleira (1x)'}
+    ],
+    carrinho: [
+        {id: 1, cliente: 'Maria Oliveira', telefone: '11965432109', valor: 'R$ 140,90', produtos: 'Ração Premium (1x), Shampoo (2x)', status: 'Pendente'},
+        {id: 2, cliente: 'Bernardo Costa', telefone: '11954321098', valor: 'R$ 84,60', produtos: 'Ração Gatos (1x), Bola Tênis (3x)', status: 'Pendente'}
+    ]
+};
+
+// Carregar dados (servidor ou mock)
 async function loadData(section) {
     try {
         showLoading(section);
-        const response = await fetch(`api.php?action=${section}`);
-        const data = await response.json();
         
-        if (data.error) {
-            throw new Error(data.error);
+        let data;
+        
+        if (useLocalData) {
+            // Simular delay de rede
+            await new Promise(resolve => setTimeout(resolve, 500));
+            data = mockData[section];
+        } else {
+            // Buscar do servidor
+            const url = `${API_BASE}/api.php?action=${section}`;
+            console.log(`📡 Buscando: ${url}`);
+            
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            const text = await response.text();
+            
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                console.error('Resposta não é JSON válido:', text);
+                throw new Error('Resposta inválida do servidor');
+            }
+            
+            if (data.error) {
+                throw new Error(data.error);
+            }
         }
         
         currentData[section] = data;
@@ -18,6 +111,16 @@ async function loadData(section) {
         
     } catch (error) {
         console.error('Erro ao carregar dados:', error);
+        
+        // Se falhar servidor, usar dados mockados
+        if (!useLocalData) {
+            console.log('🔄 Servidor indisponível, usando dados demo...');
+            useLocalData = true;
+            showAlert('⚠️ Servidor indisponível, usando dados demo');
+            loadData(section);
+            return;
+        }
+        
         showError(section, error.message);
     }
 }
@@ -238,11 +341,35 @@ function setupHoverEffects() {
     });
 }
 
+// Alternar entre servidor e dados locais
+function toggleDataSource() {
+    useLocalData = !useLocalData;
+    const status = useLocalData ? 'dados demo' : 'servidor';
+    showAlert(`🔄 Usando ${status}`);
+    
+    // Recarregar aba atual
+    const activeTab = document.querySelector('.tab-content.active');
+    if (activeTab) {
+        loadData(activeTab.id);
+    }
+}
+
 // Inicializar quando a página carregar
 document.addEventListener('DOMContentLoaded', function() {
     updateTimestamp();
     setupSearch();
     setupHoverEffects();
+    
+    // Mostrar status inicial
+    if (useLocalData) {
+        setTimeout(() => {
+            showAlert('📋 Usando dados demo. Configure banco para dados reais.');
+        }, 1000);
+    } else {
+        setTimeout(() => {
+            showAlert('🔄 Conectando ao servidor...');
+        }, 500);
+    }
     
     // Carregar dashboard inicial
     loadData('dashboard');
@@ -256,5 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 300000);
     
-    console.log(`🐾 Patas Du Jojo Admin - Conectado ao banco em ${new Date().toLocaleString('pt-BR')}`);
+    const dataSource = useLocalData ? 'dados demo' : 'servidor conectado';
+    const environment = isVercel ? 'Vercel' : isLocal ? 'Local' : 'Produção';
+    console.log(`🐾 Patas Du Jojo Admin - ${dataSource} (${environment}) em ${new Date().toLocaleString('pt-BR')}`);
 });

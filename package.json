@@ -1,0 +1,17 @@
+{
+  "name": "patas-du-jojo-admin",
+  "version": "1.0.0",
+  "description": "Painel administrativo do Petshop Patas Du Jojo",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Build complete'",
+    "start": "vercel dev"
+  },
+  "keywords": ["petshop", "admin", "php", "mysql"],
+  "author": "Du",
+  "license": "MIT",
+  "devDependencies": {
+    "@vercel/php": "^0.6.0"
+  }
+}
