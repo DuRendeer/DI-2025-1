@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patas Du Jojo - Sistema</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- cabecalho do sistema todo -->
+    <header class="cabecalho">
+        <div class="conteudo-cabecalho">
+            <div class="logo">
+                <div class="icone-logo">📊</div>
+                <div class="texto-logo">
+                    Sistema Petshop<span class="destaque"> Patas Du Jojo</span>
+                </div>
+            </div>
+            <div class="info-cabecalho">
+                <div class="status-armazenamento">
+                    <span>💾</span>
+                    <span id="statusArmazenamento">Local Ativo</span>
+                </div>
+                <div class="info-usuario">
+                    <span>👤</span>
+                    <span id="usuarioAtual">Admin</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="cabecalho-admin">
+            <h1>🎯 Gerenciamento Petshop Patas Du Jojo</h1>
+            <p>Controle total do seu negócio</p>
+        </div>
+
+        <!-- menu de navegacao -->
+        <div class="abas-navegacao">
+            <button class="aba-menu ativa" onclick="mostrarAba('painel')">📊 Painel</button>
+            <button class="aba-menu" onclick="mostrarAba('produtos')">📦 Produtos</button>
+            <button class="aba-menu" onclick="mostrarAba('clientes')">👥 Clientes</button>
+            <button class="aba-menu" onclick="mostrarAba('pets')">🐕 Pets</button>
+            <button class="aba-menu" onclick="mostrarAba('servicos')">✂️ Serviços</button>
+            <button class="aba-menu" onclick="mostrarAba('agenda')">📅 Agenda</button>
+            <button class="aba-menu" onclick="mostrarAba('vendas')">💰 Vendas</button>
+            <button class="aba-menu" onclick="mostrarAba('relatorios')">📈 Relatórios</button>
+            <button class="aba-menu" onclick="mostrarAba('config')">⚙️ Config</button>
+        </div>
+
+        <!-- painel principal -->
+        <div id="painel" class="conteudo-aba ativa">
+            <div class="cabecalho-painel">
+                <h2>Visão Geral</h2>
+                <div class="acoes-rapidas">
+                    <button class="botao-rapido" onclick="abrirModalProduto()">➕ Produto</button>
+                    <button class="botao-rapido" onclick="abrirModalCliente()">👤 Cliente</button>
+                    <button class="botao-rapido" onclick="exportarDados()">📥 Exportar</button>
+                </div>
+            </div>
+
+            <!-- estatisticas do negocio -->
+            <div class="grade-stats">
+                <div class="card-stat">
+                    <div class="icone-stat">📦</div>
+                    <div class="info-stat">
+                        <div class="numero-stat" id="totalProdutos">0</div>
+                        <div class="label-stat">Produtos</div>
+                    </div>
+                    <div class="tendencia positiva">↑ 12%</div>
+                </div>
+                <div class="card-stat">
+                    <div class="icone-stat">👥</div>
+                    <div class="info-stat">
+                        <div class="numero-stat" id="totalClientes">0</div>
+                        <div class="label-stat">Clientes</div>
+                    </div>
+                    <div class="tendencia positiva">↑ 5%</div>
+                </div>
+                <div class="card-stat">
+                    <div class="icone-stat">📊</div>
+                    <div class="info-stat">
+                        <div class="numero-stat" id="valorEstoque">R$ 0</div>
+                        <div class="label-stat">Valor Estoque</div>
+                    </div>
+                    <div class="tendencia negativa">↓ 3%</div>
+                </div>
+                <div class="card-stat">
+                    <div class="icone-stat">⚠️</div>
+                    <div class="info-stat">
+                        <div class="numero-stat" id="produtosPoucando">0</div>
+                        <div class="label-stat">Estoque Baixo</div>
+                    </div>
+                    <div class="tendencia">→ 0%</div>
+                </div>
+            </div>
+
+            <!-- graficos e tops -->
+            <div class="grade-painel">
+                <div class="card-painel">
+                    <h3>📈 Movimento Estoque</h3>
+                    <canvas id="graficoEstoque"></canvas>
+                </div>
+                <div class="card-painel">
+                    <h3>🎯 Top Produtos</h3>
+                    <div id="topProdutos" class="lista-top"></div>
+                </div>
+            </div>
+
+            <!-- alertas importantes -->
+            <div class="secao-alertas">
+                <h3>🔔 Alertas</h3>
+                <div id="alertasSistema" class="container-alertas"></div>
+            </div>
+        </div>
+
+        <!-- aba de produtos -->
+        <div id="produtos" class="conteudo-aba">
+            <div class="cabecalho-secao">
+                <h2>Produtos</h2>
+                <div class="acoes-secao">
+                    <input type="text" class="caixa-busca" placeholder="🔍 Buscar..." id="buscarProdutos">
+                    <select class="filtro-select" id="filtroCategoria">
+                        <option value="">Todas</option>
+                        <option value="racao">Ração</option>
+                        <option value="brinquedo">Brinquedo</option>
+                        <option value="higiene">Higiene</option>
+                        <option value="acessorio">Acessório</option>
+                    </select>
+                    <button class="botao-primario" onclick="abrirModalProduto()">➕ Novo</button>
+                    <button class="botao-secundario" onclick="exportarProdutos()">📥 Exportar</button>
+                </div>
+            </div>
+            
+            <div class="container-tabela">
+                <table class="tabela-dados">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selecionarTodosProdutos"></th>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Categoria</th>
+                            <th>Preço</th>
+                            <th>Estoque</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaProdutos">
+                        <!-- dados vem do js -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="paginacao">
+                <button class="botao-pagina" onclick="paginaAnterior('produtos')">◀</button>
+                <span id="infoPaginaProdutos">Página 1 de 1</span>
+                <button class="botao-pagina" onclick="proximaPagina('produtos')">▶</button>
+            </div>
+        </div>
+
+        <!-- aba de clientes -->
+        <div id="clientes" class="conteudo-aba">
+            <div class="cabecalho-secao">
+                <h2>Clientes</h2>
+                <div class="acoes-secao">
+                    <input type="text" class="caixa-busca" placeholder="🔍 Buscar..." id="buscarClientes">
+                    <select class="filtro-select" id="filtroTipoCliente">
+                        <option value="">Todos</option>
+                        <option value="cliente">Clientes</option>
+                        <option value="funcionario">Funcionários</option>
+                    </select>
+                    <button class="botao-primario" onclick="abrirModalCliente()">➕ Novo</button>
+                </div>
+            </div>
+            
+            <div class="container-tabela">
+                <table class="tabela-dados">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Tipo</th>
+                            <th>CPF/Cargo</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaClientes">
+                        <!-- dados vem do js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- aba de pets -->
+        <div id="pets" class="conteudo-aba">
+            <div class="cabecalho-secao">
+                <h2>Pets</h2>
+                <div class="acoes-secao">
+                    <input type="text" class="caixa-busca" placeholder="🔍 Buscar pets..." id="buscarPets">
+                    <button class="botao-primario" onclick="abrirModalPet()">➕ Novo Pet</button>
+                </div>
+            </div>
+            
+            <div class="container-tabela">
+                <table class="tabela-dados">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Tipo</th>
+                            <th>Porte</th>
+                            <th>Idade</th>
+                            <th>Dono</th>
+                            <th>Observações</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaPets">
+                        <!-- dados vem do js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- aba de servicos -->
+        <div id="servicos" class="conteudo-aba">
+            <div class="cabecalho-secao">
+                <h2>Serviços</h2>
+                <div class="acoes-secao">
+                    <input type="text" class="caixa-busca" placeholder="🔍 Buscar..." id="buscarServicos">
+                    <button class="botao-primario" onclick="abrirModalServico()">➕ Novo</button>
+                </div>
+            </div>
+            
+            <div class="container-tabela">
+                <table class="tabela-dados">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Preço</th>
+                            <th>Duração</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaServicos">
+                        <!-- dados vem do js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- aba da agenda -->
+        <div id="agenda" class="conteudo-aba">
+            <div class="cabecalho-secao">
+                <h2>Agendamentos</h2>
+                <div class="acoes-secao">
+                    <input type="date" class="filtro-data" id="filtroDataAgenda">
+                    <select class="filtro-select" id="filtroStatusAgenda">
+                        <option value="">Todos</option>
+                        <option value="agendado">Agendado</option>
+                        <option value="concluido">Concluído</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                    <button class="botao-primario" onclick="abrirModalAgenda()">➕ Agendar</button>
+                </div>
+            </div>
+            
+            <div class="container-tabela">
+                <table class="tabela-dados">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Pet</th>
+                            <th>Cliente</th>
+                            <th>Serviços</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaAgenda">
+                        <!-- dados vem do js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- aba de vendas -->
+        <div id="vendas" class="conteudo-aba">
+            <div class="cabecalho-secao">
+                <h2>Vendas</h2>
+                <div class="acoes-secao">
+                    <input type="date" class="filtro-data" id="filtroDataVenda">
+                    <button class="botao-primario" onclick="abrirModalVenda()">➕ Nova Venda</button>
+                    <button class="botao-secundario" onclick="gerarRelatorioVendas()">📊 Relatório</button>
+                </div>
+            </div>
+            
+            <div class="container-tabela">
+                <table class="tabela-dados">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Produtos</th>
+                            <th>Total</th>
+                            <th>Pagamento</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaVendas">
+                        <!-- dados vem do js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- aba de relatorios -->
+        <div id="relatorios" class="conteudo-aba">
+            <div class="cabecalho-secao">
+                <h2>Relatórios</h2>
+            </div>
+            
+            <div class="grade-relatorios">
+                <div class="card-relatorio">
+                    <h3>📊 Estoque</h3>
+                    <p>Análise do estoque atual</p>
+                    <button class="botao-relatorio" onclick="gerarRelatorioEstoque()">Gerar</button>
+                </div>
+                <div class="card-relatorio">
+                    <h3>💰 Financeiro</h3>
+                    <p>Vendas e faturamento</p>
+                    <button class="botao-relatorio" onclick="gerarRelatorioFinanceiro()">Gerar</button>
+                </div>
+                <div class="card-relatorio">
+                    <h3>📈 Produtos</h3>
+                    <p>Performance de produtos</p>
+                    <button class="botao-relatorio" onclick="gerarRelatorioProdutos()">Gerar</button>
+                </div>
+                <div class="card-relatorio">
+                    <h3>👥 Clientes</h3>
+                    <p>Histórico de clientes</p>
+                    <button class="botao-relatorio" onclick="gerarRelatorioClientes()">Gerar</button>
+                </div>
+            </div>
+            
+            <div id="saidaRelatorio" class="saida-relatorio"></div>
+        </div>
+
+        <!-- aba de configuracoes -->
+        <div id="config" class="conteudo-aba">
+            <div class="cabecalho-secao">
+                <h2>Configurações</h2>
+            </div>
+            
+            <div class="secoes-config">
+                <div class="card-config">
+                    <h3>💾 Dados</h3>
+                    <div class="acoes-config">
+                        <button class="botao-config" onclick="exportarTodosDados()">📥 Exportar Tudo</button>
+                        <button class="botao-config" onclick="importarDados()">📤 Importar</button>
+                        <button class="botao-perigo" onclick="limparTodosDados()">🗑️ Limpar Tudo</button>
+                    </div>
+                </div>
+                
+                <div class="card-config">
+                    <h3>🔧 Geral</h3>
+                    <div class="form-config">
+                        <label>
+                            <input type="checkbox" id="salvarAutomatico" checked>
+                            Salvar automático
+                        </label>
+                        <label>
+                            <input type="checkbox" id="mostrarNotificacoes" checked>
+                            Notificações
+                        </label>
+                        <label>
+                            <input type="checkbox" id="modoEscuro">
+                            Modo escuro
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="card-config">
+                    <h3>📊 Estatísticas</h3>
+                    <div id="statsSistema" class="stats-sistema"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- janela modal de produto -->
+    <div id="modalProduto" class="modal">
+        <div class="conteudo-modal">
+            <div class="cabecalho-modal">
+                <h3 id="tituloProduto">Novo Produto</h3>
+                <span class="fechar" onclick="fecharModalProduto()">&times;</span>
+            </div>
+            <form id="formProduto" class="form-modal">
+                <input type="hidden" id="idProduto">
+                
+                <div class="linha-form">
+                    <div class="grupo-form">
+                        <label for="nomeProduto">Nome *</label>
+                        <input type="text" id="nomeProduto" required>
+                    </div>
+                    
+                    <div class="grupo-form">
+                        <label for="categoriaProduto">Categoria *</label>
+                        <select id="categoriaProduto" required>
+                            <option value="">Escolha...</option>
+                            <option value="racao">Ração</option>
+                            <option value="brinquedo">Brinquedo</option>
+                            <option value="higiene">Higiene</option>
+                            <option value="acessorio">Acessório</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="linha-form">
+                    <div class="grupo-form">
+                        <label for="precoProduto">Preço (R$) *</label>
+                        <input type="number" id="precoProduto" step="0.01" min="0" required>
+                    </div>
+                    
+                    <div class="grupo-form">
+                        <label for="estoqueProduto">Estoque *</label>
+                        <input type="number" id="estoqueProduto" min="0" required>
+                    </div>
+                    
+                    <div class="grupo-form">
+                        <label for="estoqueMinimo">Mínimo</label>
+                        <input type="number" id="estoqueMinimo" min="0" value="5">
+                    </div>
+                </div>
+                
+                <div class="grupo-form">
+                    <label for="descricaoProduto">Descrição</label>
+                    <textarea id="descricaoProduto" rows="3"></textarea>
+                </div>
+                
+                <div class="grupo-form">
+                    <label for="ativoProduto">Status</label>
+                    <select id="ativoProduto">
+                        <option value="1">Ativo</option>
+                        <option value="0">Inativo</option>
+                    </select>
+                </div>
+                
+                <div class="acoes-form">
+                    <button type="button" onclick="fecharModalProduto()" class="botao-cancelar">Cancelar</button>
+                    <button type="submit" class="botao-salvar">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- janela modal de cliente -->
+    <div id="modalCliente" class="modal">
+        <div class="conteudo-modal">
+            <div class="cabecalho-modal">
+                <h3 id="tituloCliente">Novo Cliente</h3>
+                <span class="fechar" onclick="fecharModalCliente()">&times;</span>
+            </div>
+            <form id="formCliente" class="form-modal">
+                <input type="hidden" id="idCliente">
+                
+                <div class="linha-form">
+                    <div class="grupo-form">
+                        <label for="nomeCliente">Nome *</label>
+                        <input type="text" id="nomeCliente" required>
+                    </div>
+                    
+                    <div class="grupo-form">
+                        <label for="emailCliente">Email *</label>
+                        <input type="email" id="emailCliente" required>
+                    </div>
+                </div>
+                
+                <div class="linha-form">
+                    <div class="grupo-form">
+                        <label for="telefoneCliente">Telefone *</label>
+                        <input type="tel" id="telefoneCliente" required>
+                    </div>
+                    
+                    <div class="grupo-form">
+                        <label for="tipoCliente">Tipo *</label>
+                        <select id="tipoCliente" required onchange="alternarCamposCliente()">
+                            <option value="">Escolha...</option>
+                            <option value="cliente">Cliente</option>
+                            <option value="funcionario">Funcionário</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="camposCliente" style="display: none;">
+                    <div class="grupo-form">
+                        <label for="cpfCliente">CPF</label>
+                        <input type="text" id="cpfCliente" placeholder="000.000.000-00">
+                    </div>
+                </div>
+                
+                <div id="camposFuncionario" style="display: none;">
+                    <div class="grupo-form">
+                        <label for="cargoCliente">Cargo</label>
+                        <input type="text" id="cargoCliente">
+                    </div>
+                </div>
+                
+                <div class="acoes-form">
+                    <button type="button" onclick="fecharModalCliente()" class="botao-cancelar">Cancelar</button>
+                    <button type="submit" class="botao-salvar">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- janela de confirmacao -->
+    <div id="modalConfirmar" class="modal">
+        <div class="conteudo-modal modal-confirmar">
+            <div class="cabecalho-modal">
+                <h3>⚠️ Confirmar</h3>
+                <span class="fechar" onclick="fecharModalConfirmar()">&times;</span>
+            </div>
+            <div class="corpo-modal">
+                <p id="mensagemConfirmar">Tem certeza?</p>
+            </div>
+            <div class="acoes-form">
+                <button type="button" onclick="fecharModalConfirmar()" class="botao-cancelar">Cancelar</button>
+                <button type="button" id="botaoConfirmar" class="botao-perigo">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- container de notificacoes -->
+    <div id="containerToast" class="container-toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
