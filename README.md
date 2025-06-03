@@ -19,7 +19,7 @@ Sistema administrativo completo para petshop com PHP + MySQL rodando no Vercel.
 index.html          # Frontend principal
 style.css           # Estilisação do site
 script.js           # JavaScript integrado para as funções + Integra com o Local Storage
-PatasDuJojo.sql     # Script do banco SQL do Banco
+PatasDuJojo.sql     # Script do banco SQL 
 README.md           # Este arquivo de explicação
 ```
 
