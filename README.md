@@ -5,7 +5,7 @@ Alunos Eduardo Sochodolak,
        Johann Matheus Pedroso da Silva
 
 - link da hospedagem: https://patasdujojo-gerencia.vercel.app
-- link video apresentação: 
+- link video apresentação: https://youtu.be/fsQdyikg6UA
 - link da documentação (Diagramas e descrição textual dos diagramas): https://docs.google.com/document/d/1gKlZR0MLxnVwBRuxtDhilnbk_iCssAosciDOv6pJlro/edit?usp=sharing
 - link da documentação com WCAGs implementadas:https://docs.google.com/document/d/18yN5Dt1jF142ctZamOf4gXEZAcPZpkt6Hy8npE44VDs/edit?usp=sharing
 
